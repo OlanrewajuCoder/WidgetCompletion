@@ -1,0 +1,40 @@
+.scan-table {
+  border: none !important;
+}
+.product-header {
+  height: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 1rem;
+  margin-bottom: 15px;
+  align-items: end;
+  border-top: 1px solid var(--bordercolor);
+}
+.scans-col {
+  padding: 0 !important;
+}
+.scan-header {
+  font-size: 1.3rem;
+  font-family: "Albert light", sans-serif !important;
+}
+
+.outline-search {
+  border-bottom: 1px solid var(--bordercolor);
+  display: flex;
+  align-items: end;
+}
+.input-box-change {
+  display: flex;
+  align-items: start;
+}
+.search-icon-scan {
+  position: absolute;
+  top: 20px;
+}
+
+.css-ahj2mt-MuiTypography-root {
+  font-size: 15px !important;
+  font-family: "Albert light", sans-serif !important;
+}

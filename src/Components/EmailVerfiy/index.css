@@ -1,0 +1,25 @@
+.sync-data-daily {
+  border: 1px solid #b58900;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 253, 235);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.sync-button {
+  background-color: #b58900;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: auto;
+}
+
+.sync-button:disabled {
+  background-color: #b58900;
+  cursor: not-allowed;
+}

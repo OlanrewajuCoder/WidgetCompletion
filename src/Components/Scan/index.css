@@ -1,0 +1,67 @@
+.scan-table {
+  border: none !important;
+}
+.scans-header {
+  height: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 1rem;
+  margin-bottom: 15px;
+  align-items: end;
+  border-top: 1px solid var(--bordercolor);
+}
+.scans-col {
+  padding: 0 !important;
+}
+.scan-header {
+  font-size: 1.3rem;
+  font-family: "Albert light", sans-serif !important;
+}
+.dropdown-icon {
+  position: absolute;
+  top: 13px;
+  left: 44px;
+  color: #626465 !important;
+}
+.outline-search {
+  border-bottom: 1px solid var(--bordercolor);
+  display: flex;
+  align-items: end;
+}
+.input-box-change {
+  display: flex;
+  align-items: start;
+}
+.search-icon-scan {
+  position: absolute;
+  top: 20px;
+}
+
+.css-ahj2mt-MuiTypography-root {
+  font-size: 15px !important;
+  font-family: "Albert light", sans-serif !important;
+}
+.MuiDataGrid-columnHeader {
+  min-width: 70px !important;
+}
+.MuiDataGrid-cellCheckbox {
+  min-width: 70px !important;
+}
+.dropdown-content {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  z-index: 10;
+}
+.dropdown-text {
+  font-size: 15px !important;
+  font-family: "Albert light", sans-serif !important;
+}
+.loading-loader {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -1,0 +1,71 @@
+.scan-table {
+  cursor: pointer;
+}
+.enlarged-image {
+  width: 145px;
+  height: 150px;
+}
+
+.hyperlink-style {
+  text-decoration: none;
+  color: skyblue;
+  cursor: pointer;
+  font-weight: "bold";
+}
+.graph-image {
+  width: 100%;
+  height: 100%;
+}
+.asin {
+  width: 10px !important;
+}
+.css-t89xny-MuiDataGrid-columnHeaderTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 20px !important;
+  white-space: normal !important;
+  font-weight: var(--unstable_DataGrid-headWeight);
+}
+.even-row {
+  background-color: #f3f3f3 !important;
+}
+.star-colour {
+  color: #00c853 !important;
+}
+.odd-row {
+  background-color: white !important;
+}
+.modal-button {
+  height: 40px;
+  font-family: "Albert", sans-serif !important;
+  color: #fff;
+  background: #00c853 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.modal-button :hover {
+  background: #00c853 !important;
+}
+:where(.css-dev-only-do-not-override-6j9yrn).ant-btn-primary {
+  color: #fff;
+  background: #00c853 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+:where(.css-dev-only-do-not-override-6j9yrn).ant-btn-primary:hover {
+  background: #00c853 !important;
+}
+.scan-header{
+  font-weight: bold;
+}
+
+/* /////////// */
+:where(.css-6j9yrn).ant-btn-primary {
+  color: #fff;
+  background: #19C853;
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
+}
+:where(.css-6j9yrn).ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  color: #fff;
+  background: #19C853;
+}

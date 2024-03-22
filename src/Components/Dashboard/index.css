@@ -1,0 +1,122 @@
+.items-grid {
+  display: flex;
+  justify-content: space-between;
+  padding: 5%;
+  align-items: center;
+  border: 1px solid var(--basetheme) !important;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: var(--basetheme) !important;
+  color: white;
+  font-family: "albert light", sans-serif;
+  font-size: medium !important;
+}
+.items-Exchange {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5%;
+  align-items: center;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: var(--basetheme) !important;
+  color: white;
+  font-family: "albert light", sans-serif;
+  font-size: medium !important;
+}
+.Exchange-Rates {
+  display: flex;
+  justify-content: space-between;
+  padding: 5%;
+  align-items: center;
+  background-color: var(--tablecolor) !important;
+  border: 1px solid var(--bordercolor) !important;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 369.2px;
+  margin-bottom: 20px;
+  color: white;
+  font-family: "albert light", sans-serif;
+  font-size: medium !important;
+}
+.admin {
+  text-transform: capitalize;
+  font-family: "albert light", sans-serif;
+  font-size: 2rem;
+}
+.table-text {
+  font-family: "albert light", sans-serif;
+}
+.table-loading {
+  border: 1px solid var(--bordercolor);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.main-loading {
+  display: flex;
+  height: 500px;
+  justify-content: center;
+  flex-direction: column;
+}
+.Recent-Scans {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  align-items: center;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background-color: var(--basetheme) !important;
+  color: white;
+  font-family: "albert light", sans-serif;
+  font-size: medium !important;
+}
+.items-icons {
+  padding: 0px 10px 0px 0px;
+  font-size: 1.8rem !important;
+}
+
+.flag-alignment {
+  padding: 1rem;
+  width: auto;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+.flag-icons {
+  width: 20px;
+}
+
+.MuiPagination-ul {
+  justify-content: flex-end !important;
+}
+.MuiPagination-ul li button {
+  background-color: #f3f4f6;
+  border: 1px solid #f3f4f6;
+}
+.MuiPagination-ul li button.Mui-selected {
+  background-color: #44a048;
+  border: 1px solid #44a048;
+  color: white;
+}
+.css-ptkaw2-MuiDataGrid-root {
+  border-color: var(--bordercolor) !important;
+  background-color: var(--tablecolor) !important;
+  color: var(--textcolor) !important;
+}
+.css-ptkaw2-MuiDataGrid-root .MuiDataGrid-withBorderColor {
+  border-color: var(--bordercolor) !important;
+}
+.tables-heads{
+  text-decoration: none;
+  color: skyblue;
+  cursor: pointer;
+}
+.admins{
+  text-transform: capitalize;
+  font-family: "albert light", sans-serif;
+font-weight: bold;
+}
