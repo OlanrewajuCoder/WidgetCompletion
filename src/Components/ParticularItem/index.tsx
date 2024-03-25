@@ -71,10 +71,17 @@ const ParticularItem: React.FunctionComponent<resultprops> = ({
   const capitalizeFirstLetter = (string: any) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  // const handleTitleClick = (params: any) => {
+  //   console.log("Clicked ASIN:", params.row.asin);
+  //   navigate(
+  //     `/my-scan/${params.row.productId}/${params.row.asin}/${params.row.countryCode}/${params.row.productUploadId}`
+  //   );
+  // };
+
   const handleTitleClick = (params: any) => {
     console.log("Clicked ASIN:", params.row.asin);
     navigate(
-      `/my-scan/${params.row.productId}/${params.row.asin}/${params.row.countryCode}/${params.row.productUploadId}`
+      `/widgets/${params.row.productId}/${params.row.asin}/${params.row.countryCode}/${params.row.productUploadId}`
     );
   };
   useEffect(() => {
@@ -774,7 +781,7 @@ const ParticularItem: React.FunctionComponent<resultprops> = ({
   const showModal = () => {
     if (isData.length === 0) {
       message.error("Choose File First");
-    }else{
+    } else {
       setIsModalOpen(true);
       getFavList();
     }

@@ -32,6 +32,12 @@ function App() {
         <Route path="/signup" element={<Register />} />
         <Route path="/forgot-password" element={<ResetPassword />} />
         <Route
+          path="/widgets/:id/:asin/:code/:paramid/"
+          element={
+            <ProductWidgets searchProductDetails={searchProductDetails} />
+          }
+        />
+        <Route
           path="/"
           element={
             <React.Fragment>
@@ -44,12 +50,12 @@ function App() {
             path="/dashboard"
             element={<Dashboard searchResult={searchResult} />}
           />
-          <Route
+          {/* <Route
             path="/widgets"
             element={
               <ProductWidgets searchProductDetails={searchProductDetails} />
             }
-          />
+          /> */}
           <Route path="/setting" element={<Setting />} />
           <Route path="/product-folder" element={<ProductFolder />} />
           <Route path="/scans" element={<Scan />} />

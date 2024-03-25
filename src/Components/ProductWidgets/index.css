@@ -14,6 +14,8 @@
   flex-basis: 30%;
   padding: 0;
   margin-bottom: 15px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
 }
 
 .accordion--header {
@@ -96,12 +98,16 @@
 
 .card-display {
   /* background-color: rgba(242, 242, 242, 0.1); */
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 4px;
   text-align: center;
   flex: 1;
-  margin-top: 20px;
-  max-height: 50px;
+  margin: 2px;
+  /* max-height: 50px; */
+}
+
+.card-display--text {
+  margin: 0;
 }
 
 .card-display--title {
@@ -109,21 +115,45 @@
   width: 100%;
   font-weight: normal;
   color: #fff;
-  background-color: #aaaaaa;
-  /* background-color: var(--activecolor); */
+  background-color: #ddd;
   padding: 5px;
   border-bottom: 1px solid #ccc;
+  color: #333;
   margin: 0;
 }
 .card-display--content {
   width: 100%;
-  background-color: #dff0d8;
+  background-color: #f9f9f9;
   color: #000;
-  padding: 5px 16px;
+  padding: 5px;
   font-weight: normal;
   border-radius: 4px;
   margin: 0;
   text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.card-display--content input {
+  width: 100%;
+  background-color: #fff;
+  border: none;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.card-display--content input:focus {
+  border-color: #66afe9;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(102, 175, 233, 0.6);
+  outline: 0;
+  border: 0;
+}
+
+.card-display--content span {
+  padding: 0 4px;
+  background-color: #eee;
+  border-radius: 4px 0 0 4px;
 }
 
 .card-display--content.special {
@@ -135,7 +165,7 @@
   font-weight: normal;
 }
 
-.green-bg {
+/* .green-bg {
   background-color: #fcf8e3;
   color: white;
   padding: 5px;
@@ -143,7 +173,7 @@
   text-align: center;
   width: max-content;
   margin: 0 auto;
-}
+} */
 
 .offer-summary {
   text-align: left;
@@ -173,4 +203,50 @@
   background-color: #d6e9a7;
   color: var(--activecolor);
   border-color: var(--activecolor);
+}
+
+.white-bg {
+  background-color: #fff;
+}
+
+.green-bg {
+  background-color: #d6e9c6;
+  color: #3c763d;
+}
+
+.criteria-success {
+  background-color: rgb(223, 240, 216);
+  color: #3c763d;
+}
+
+.criteria-fail {
+  color: rgb(169, 68, 66);
+  background-color: rgb(242, 222, 222);
+}
+
+.info-container {
+  display: flex;
+}
+
+.offer-btn:hover {
+  color: #333 !important;
+  background-color: #d4d4d4 !important;
+  border-color: #8c8c8c !important;
+}
+
+.offer-btn {
+  padding: 5px 10px;
+  border-radius: 4px !important;
+  max-height: 30px;
+  background-color: #e6e6e6 !important;
+  border-color: #adadad !important;
+  font-size: 13px;
+  text-decoration: none;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.rank-btn:hover {
+  color: #fff !important;
+  background-color: #286090 !important;
+  border-color: #204d74 !important;
 }

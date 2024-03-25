@@ -261,6 +261,7 @@ export const getAlerts = (datas: any) => {
 
 export const getRanks = (datas: any) => {
   const { UniqueId } = datas;
+  console.log(datas);
   return axios.get(
     `https://api.sellerscout.com/Product/Ranks?UniqueId=${UniqueId}`,
     {

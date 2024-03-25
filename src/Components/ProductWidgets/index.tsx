@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Accordion,
   AccordionDetails,
@@ -57,7 +57,7 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   searchProductDetails,
 }: ProductWidgetsProps) => {
   const [productDetails, setProductDetails] = useState<any>([]);
-  const [otherDetails, setOtherDetails] = useState<any>([]);
+  const [otherDetails, setOtherDetails] = useState<any>({});
   const [sellerOffer, setSellerOffer] = useState<any>([]);
   const [variations, setVariations] = useState<any>([]);
   const [dayRange, setDayRange] = useState<any>(30);
@@ -67,14 +67,20 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   const [ebayDetails, setEbayDetails] = useState<any>({});
   const [alerts, setAlerts] = useState<any>({});
   const [ranks, setRanks] = useState<any>({});
-  const productId = "65e6fc5a3b6ac1778df2428e";
+  const [quickInfoStatus, setQuickInfoStatus] = useState<boolean>(false);
+  // const productId = "65e6fc5a3b6ac1778df2428e";
+  const params = useParams();
+  console.log("Rendering with params:", params);
+
   // 65e6fc5a3b6ac1778df2428e
-  const scanId = "65e0847142448d366ad9ad9e";
+  // const scanId = "65e0847142448d366ad9ad9e";
+  const scanId = params.paramid;
+  const productId = params.id;
   const getProducts = () => {
     setLoading(true);
     addProductUploadList(productId)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setProductDetails(res.data);
         setLoading(false);
       })
@@ -82,18 +88,13 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
     setLoading(false);
   };
 
-  useEffect(() => {
-    token();
-    getProducts();
-  }, []);
-
   const getAllProducts = () => {
     setLoading(true);
     productDetailsApi(scanId, { page: 1, perPage: 10 }, false)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         const details = res.data.data.filter(
-          (prod: any) => prod.productId == productDetails.productId
+          (prod: any) => prod.productId === productDetails.productId
         );
         setOtherDetails(details[0]);
         setLoading(false);
@@ -107,25 +108,19 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
       });
   };
 
-  useEffect(() => {
-    getAllProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productDetails]);
-  console.log("Others: ", otherDetails);
-
   const getSellers: any = () => {
     setLoading(true);
-    const countryCode = otherDetails.countryCode;
-    const UniqueId = otherDetails.asin;
-    console.log("Country Code: ", countryCode);
-    console.log("ASIN: ", UniqueId);
+    const countryCode = otherDetails?.countryCode;
+    const UniqueId = otherDetails?.asin;
+    // console.log("Country Code: ", countryCode);
+    // console.log("ASIN: ", UniqueId);
     getSellerOffer({
       UniqueId,
       SourceId: 105,
       ProductId: productId,
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setSellerOffer(res.data.selleroffer);
       })
       .catch((err) => {
@@ -140,14 +135,14 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   const getVariations = async () => {
     setLoading(true);
     const request = {
-      country: otherDetails.countryCode,
+      country: otherDetails?.countryCode,
       // asin: "B0000535UU",
-      asin: otherDetails.productId,
+      asin: otherDetails?.productId,
     };
     // console.log(request);
     try {
       const response = await getSellerVariation(request);
-      console.log(response);
+      // console.log(response);
       setVariations(response.data.productVariations);
       setLoading(false);
     } catch (err) {
@@ -159,13 +154,14 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   const getEBayLinks = async () => {
     let datas;
     setLoading(true);
-    const upc = otherDetails.upc;
+    const upc = otherDetails?.upc;
     if (upc === null) {
       datas = {
         upc: "",
       };
     }
     datas = { upc };
+    // console.log(datas, "//////////////////////////////////");
     try {
       const response = await getEbayDetails(datas);
       // console.log("Ebay: ", response);
@@ -178,14 +174,24 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   };
 
   const getAlertDetails = async () => {
+    console.log("///////////////alert1", otherDetails);
     setLoading(true);
+    if (!otherDetails) {
+      setLoading(false);
+      return;
+    }
+    console.log("///////////////alert2");
     const datas = {
-      ProductId: otherDetails.productId,
-      UniqueId: otherDetails.asin,
+      ProductId: otherDetails?.productId,
+      UniqueId: otherDetails?.asin,
     };
     try {
       const response = await getAlerts(datas);
-      console.log("Alert Details:", response);
+      console.log(datas, otherDetails);
+      console.log(
+        "///////////////////////////////////////////Alert Details:",
+        response
+      );
       setAlerts(response.data);
       setLoading(false);
     } catch (err) {
@@ -197,31 +203,21 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   const getRankDetails = async () => {
     setLoading(true);
     const datas = {
-      UniqueId: otherDetails.asin,
+      UniqueId: otherDetails?.asin,
     };
     try {
-      const response = await getRanks(datas);
-      console.log("Ranks Details:", response);
-      setRanks(response.data);
+      // const response = await getRanks(datas);
+      // console.log("Ranks Details:", response);
+      console.log(ranks, "/////////////////////ranks");
+      if (!ranks) {
+        // setRanks(response.data);
+      }
       setLoading(false);
     } catch (err) {
       console.error("Error fetching ranks", err);
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (otherDetails) {
-      getSellers();
-      getVariations();
-      getEBayLinks();
-      getAlertDetails();
-      getRankDetails();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [otherDetails]);
-  // console.log("Seller offer is: ", sellerOffer);
-  console.log("variations is: ", variations);
 
   const getGraph = async (asin: any, country: any) => {
     const request = {
@@ -261,8 +257,33 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
   };
 
   useEffect(() => {
+    token();
+    getProducts();
+  }, []);
+
+  useEffect(() => {
+    getAllProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productDetails]);
+  // console.log("Others: ", otherDetails);
+
+  useEffect(() => {
+    // console.log(otherDetails, "////////////////////////");
+    if (otherDetails?.length !== 0) {
+      getSellers();
+      getVariations();
+      getEBayLinks();
+      getAlertDetails();
+      getRankDetails();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otherDetails]);
+  // console.log("Seller offer is: ", sellerOffer);
+  // console.log("variations is: ", variations);
+
+  useEffect(() => {
     if (otherDetails) {
-      getGraph(otherDetails.asin, otherDetails.countryCode);
+      getGraph(otherDetails?.asin, otherDetails?.countryCode);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dayRange, otherDetails]);
@@ -287,18 +308,23 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
       }}
     >
       {/* Grid 1 */}
-      <Grid item xs={12} sm={6} md={4}>
-        <Accordion className="accordion" defaultExpanded={true}>
+      <Grid item xs={12} sm={6} md={4} xl={3}>
+        <Accordion
+          className="accordion"
+          style={{ minHeight: "30px" }}
+          defaultExpanded={true}
+        >
           <AccordionSummary
             className="accordion--header"
             expandIcon={
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -419,13 +445,16 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
+              margin: "0",
             }}
+            style={{ margin: "0" }}
           >
             <Typography>Quick Info</Typography>
           </AccordionSummary>
@@ -436,114 +465,143 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
             }}
           >
             {/* Eligibility */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={6}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Eligible</h2>
-                  <div className="card-display--content special">
-                    <h5 className="card-display--text">Check Alerts Panel</h5>
-                  </div>
+            <div className="info-container">
+              {/* <Grid item xs={12} sm={6} md={6}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Eligible</h2>
+                <div className="card-display--content white-bg">
+                  <h5 className="card-display--text">-</h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={6}>
-                {/* Alerts section */}
-                <div className="card-display">
-                  <h2 className="card-display--title">Alerts</h2>
-                  <div className="card-display--content special">
-                    <h5 className="card-display--text green-bg">V</h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={6} style={{ padding: "0" }}> */}
+              {/* Alerts section */}
+              <div className="card-display">
+                <h2 className="card-display--title">Alerts</h2>
+                <div className="card-display--content green-bg">
+                  <span>7</span>
                 </div>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">BSR</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">1 (1%)</h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+            </div>
+            <div className="info-container" style={{ padding: "0" }}>
+              {/* <Grid item xs={12} sm={6} md={4}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">BSR</h2>
+                <div className="card-display--content green-bg">
+                  <h5 className="card-display--text">219k (1%)</h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Est. Sales</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">Unknown</h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Est. Sales</h2>
+                <div className="card-display--content">
+                  <h5 className="card-display--text">Unknown</h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Max Cost</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">$25.80</h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Max Cost</h2>
+                <div
+                  className={`card-display--content ${
+                    quickInfoStatus ? "criteria-success" : "criteria-fail"
+                  }`}
+                >
+                  <h5 className="card-display--text">$25.80</h5>
                 </div>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={6}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Cost Price</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">
+              </div>
+              {/* </Grid> */}
+            </div>
+            <div className="info-container">
+              {/* <Grid item xs={12} sm={6} md={6} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Cost Price</h2>
+                <div className="card-display--content">
+                  {/* <h5 className="card-display--text">
                       $ {otherDetails?.price || "-"}
-                    </h5>
-                  </div>
+                    </h5> */}
+                  <span>$</span>
+                  <input
+                    type="number"
+                    placeholder="15.00"
+                    value="15"
+                    step="any"
+                    pattern="[0-9]*"
+                  />
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={6}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Sales Price</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={6} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Sales Price</h2>
+                <div className="card-display--content">
+                  {/* <h5 className="card-display--text">
                       $ {otherDetails?.price || "-"}
-                    </h5>
-                  </div>
+                    </h5> */}
+                  <span>$</span>
+                  <input type="number" placeholder="15.00" />
                 </div>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Profit</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">
-                      $ {otherDetails?.profit || "-"}
-                    </h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+            </div>
+            <div className="info-container">
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Profit</h2>
+                <div
+                  className={`card-display--content ${
+                    quickInfoStatus ? "criteria-success" : "criteria-fail"
+                  }`}
+                >
+                  <h5 className="card-display--text">
+                    $ {otherDetails?.profit || "-"}
+                  </h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                {" "}
-                <div className="card-display">
-                  <h2 className="card-display--title">Profit %</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">
-                      {otherDetails?.profit / 100 || "-"}%
-                    </h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}{" "}
+              <div className="card-display">
+                <h2 className="card-display--title">Profit %</h2>
+                <div
+                  className={`card-display--content ${
+                    quickInfoStatus ? "criteria-success" : "criteria-fail"
+                  }`}
+                >
+                  <h5 className="card-display--text">
+                    {otherDetails?.profit / 100 || "-"}%
+                  </h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">ROI</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">
-                      {otherDetails?.roi || "-"}%
-                    </h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">ROI</h2>
+                <div
+                  className={`card-display--content ${
+                    quickInfoStatus ? "criteria-success" : "criteria-fail"
+                  }`}
+                >
+                  <h5 className="card-display--text">
+                    {otherDetails?.roi || "-"}%
+                  </h5>
                 </div>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <div className="card-display">
-                  <h2 className="card-display--title">Breakeven</h2>
-                  <div className="card-display--content">
-                    <h5 className="card-display--text">$36.48</h5>
-                  </div>
+              </div>
+              {/* </Grid> */}
+              {/* <Grid item xs={12} sm={6} md={4} style={{ padding: "0" }}> */}
+              <div className="card-display">
+                <h2 className="card-display--title">Breakeven</h2>
+                <div
+                  className={`card-display--content ${
+                    quickInfoStatus ? "criteria-success" : "criteria-fail"
+                  }`}
+                >
+                  <h5 className="card-display--text">$36.48</h5>
                 </div>
-              </Grid>
-            </Grid>
+              </div>
+              {/* </Grid> */}
+            </div>
 
             <div className="flex-display"></div>
 
@@ -577,22 +635,50 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
           >
             <Typography>Alerts</Typography>
             <Chip
-              label="5"
+              label="6"
               color="success"
               size="small"
-              sx={{ marginLeft: "auto", marginRight: 1 }}
+              sx={{
+                marginLeft: "auto",
+                marginRight: "4px",
+                borderRadius: "4px",
+                backgroundColor: "#3c763d",
+              }}
             />
-            <Chip label="1" color="warning" size="small" />
+            <Chip
+              color="warning"
+              label="0"
+              size="small"
+              sx={{
+                opacity: "0.2",
+                borderRadius: "4px",
+                backgroundColor: "#e8a217",
+                color: "transparent",
+                marginRight: "4px",
+              }}
+            />
+            <Chip
+              color="warning"
+              label="0"
+              size="small"
+              sx={{
+                opacity: "0.2",
+                borderRadius: "4px",
+                backgroundColor: "#a94442",
+                color: "transparent",
+              }}
+            />
           </AccordionSummary>
           <AccordionDetails
             className="accordion-details product-accordion"
@@ -762,10 +848,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -807,15 +894,16 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
           >
-            <Typography>Seller Offers</Typography>
+            <Typography>Offers</Typography>
           </AccordionSummary>
           <AccordionDetails
             className="accordion-details"
@@ -824,9 +912,22 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
             }}
           >
             <div className="seller-content">
-              <ToggleButtonGroup exclusive>
-                <ToggleButton value="live">Live</ToggleButton>
-                <ToggleButton value="all">All Offers</ToggleButton>
+              <ToggleButtonGroup
+                exclusive
+                style={{ width: "100%", justifyContent: "space-between" }}
+              >
+                <ToggleButton className="offer-btn" value="live">
+                  Live
+                </ToggleButton>
+                <ToggleButton
+                  className="offer-btn"
+                  value="all"
+                  style={{
+                    borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
+                  }}
+                >
+                  All Offers
+                </ToggleButton>
               </ToggleButtonGroup>
               <TableContainer
                 component={Paper}
@@ -930,10 +1031,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -1165,6 +1267,7 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
                           color: "#FFF",
                           alighSelf: "flex-end",
                         }}
+                        className="rank-btn"
                       >
                         Refresh
                       </Button>
@@ -1183,10 +1286,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -1209,6 +1313,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 native
+                style={{
+                  fontSize: "13px",
+                  border: "1px solid #000",
+                  padding: "0 !important",
+                }}
                 // value={scheme}
                 // label="Scheme"
                 // onChange={handleChange}
@@ -1232,10 +1341,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -1272,10 +1382,11 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -1491,17 +1602,22 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
             </Box>
           </AccordionDetails>
         </Accordion>
-        <Accordion className="accordion" defaultExpanded={true}>
+        <Accordion
+          className="accordion"
+          style={{ border: "1px solid #aaa", margin: "0" }}
+          defaultExpanded={true}
+        >
           <AccordionSummary
             className="accordion--header"
             expandIcon={
               <ArrowDropDown sx={{ color: "#000", fontSize: "14px" }} />
             }
             sx={{
-              maxHeight: 30,
+              minHeight: "30px !important",
+              maxHeight: "30px !important",
               padding: "0px 10px",
-              backgroundColor: "#AAAAAA",
-              borderRadius: "6px",
+              backgroundColor: "#ddd",
+              borderRadius: "4px",
               color: "#000",
               fontWeight: "bold",
             }}
@@ -1516,9 +1632,10 @@ const ProductWidgets: React.FC<ProductWidgetsProps> = ({
           >
             <Stack
               direction="row"
-              spacing={2}
+              // spacing={2}
               alignItems={"center"}
               sx={{ width: "100%" }}
+              gap={"5px"}
             >
               <a href={ebayDetails.searchEBay} target="_blank" rel="noreferrer">
                 {" "}
