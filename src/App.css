@@ -27,14 +27,14 @@ body {
   margin: 0 !important;
 }
 :where(.css-6j9yrn).ant-modal .ant-modal-content {
-  padding: 0px 0px 20px 0px !important;
+  padding: 0px 0px 30px 0px !important;
 }
 :where(.css-6j9yrn).ant-modal .ant-modal-footer {
   margin: 10px 15px !important;
 }
 .css-wigwbp {
-  padding: 12px 28px !important;
-  font-size: 15px !important;
+  padding: 14px 28px !important;
+  font-size: 16px !important;
   font-family: "Albert", sans-serif !important;
   font-weight: 500 !important;
 }

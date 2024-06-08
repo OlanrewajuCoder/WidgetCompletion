@@ -12,10 +12,10 @@
   font-size: medium !important;
 }
 .items-Exchange {
-  height: 60px;
+  height: 65px;
   display: flex;
   justify-content: space-between;
-  padding: 5%;
+  padding: 6%;
   align-items: center;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
